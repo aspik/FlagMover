@@ -49,10 +49,9 @@
     <Content Include="plugin.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Skin\default\screens\Mover.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Content Include="Skin\default\screens\Mover.xaml">
       <SubType>Designer</SubType>
-    </Page>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
