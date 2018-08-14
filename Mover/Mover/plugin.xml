@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Plugin
+  DescriptorVersion="1.0"
+  Name="Mover"
+  PluginId="{C334A0ED-85C3-4657-A0BB-C9A7532121A1}"
+  Author="aspik"
+  Copyright="GPL"
+  Description="Movies watched status between from one MP2 installation to another">
+
+  <Version
+    PluginVersion="1.0"
+    ReleaseDate="2018-09-01 01:00:00 GMT+01:00"
+    CurrentAPI="1"/>
+
+  <Runtime>
+    <Assembly FileName="Mover.dll"/>
+  </Runtime>
+
+  <DependsOn>
+    <PluginReference PluginId="{1AFF4467-64B0-4ca1-AF28-9AEDF3525BCE}" CompatibleAPI="1"/> <!-- ConfigurationManager -->
+    <PluginReference PluginId="{B765A4B6-F455-4941-BDAE-2CE45208BFEB}" CompatibleAPI="1"/> <!-- Configuration plugin -->
+  </DependsOn>
+  
+  <Register Location="/Models">
+    <Model Id="0A24888F-63C0-442A-9DF6-431869BDE803" Name="TraktSetupModel" ClassName="TraktPluginMP2.Models.TraktSetupModel"/>
+    <Model Id="FF91EFE4-120E-499B-8461-BB3C21DFB3E3" Name="TraktNotificationModel" ClassName="TraktPluginMP2.Models.TraktNotificationModel" />
+  </Register>
+
+  <Register Location="/Workflow/States">
+    <DialogState Id="3DB8C6DB-F4E4-4A87-80CE-53339AECF494" Name="TraktSetup" DialogScreen="dialogTraktSetup"
+                 DisplayLabel="[Settings.Plugins.Trakt.TraktSetup]" WorkflowModel="0A24888F-63C0-442A-9DF6-431869BDE803"/>
+  </Register>
+
+  <Register Location="/Resources/Language">
+    <Resource Id="TraktLanguage" Directory="Language" Type="Language"/>
+  </Register>
+
+  <Register Location = "/Resources/Skin">
+    <Resource Id="TraktSkin" Directory="Skin" Type="Skin"/>
+  </Register>
+
+  <!-- Root configuration sections -->
+  <Register Location="/Configuration/Settings">
+    <ConfigSection
+      Id="Plugins"
+      Redundant="true"
+      Text="[Settings.Plugins]"/>
+  </Register>
+
+  <!-- Contents of '/Plugins' section -->
+  <Register Location="/Configuration/Settings/Plugins">
+    <ConfigSection
+      Id="Trakt"
+      Redundant="true"
+      Text="[Settings.Plugins.Trakt]"/>
+  </Register>
+
+  <!-- Contents of '/Plugins/Trakt' section -->
+  <Register Location="/Configuration/Settings/Plugins/Trakt">
+    <CustomConfigSetting
+      Id="TraktSetup"
+      Text="[Settings.Plugins.Trakt.TraktSetup]"
+      HelpText="[Settings.Plugins.Trakt.TraktSetup.Help]"
+      ClassName="TraktPluginMP2.Settings.Configuration.TraktSettingsConfiguration"
+      AdditionalData="WorkflowState=3DB8C6DB-F4E4-4A87-80CE-53339AECF494,ConfAppPanel=..."/>
+
+  </Register>
+  
+  <!-- Contents of '/Plugins/Trakt' section -->
+  <Register Location="/Configuration/Settings/Plugins/Trakt">
+    <CustomConfigSetting
+      Id="IsScrobbleEnabled"
+      Text="[Settings.Plugins.Trakt.IsScrobbleEnabled]"
+      HelpText="[Settings.Plugins.Trakt.IsScrobbleEnabled.Help]"
+      ClassName="TraktPluginMP2.Settings.IsScrobbleEnabled"/>
+  </Register>
+  
+</Plugin>
