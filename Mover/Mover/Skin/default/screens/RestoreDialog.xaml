@@ -6,8 +6,8 @@
   
   <Include.Resources>
 
-    <ResourceWrapper x:Key="Dialog_Header_Text" Resource="[Settings.Plugins.Trakt.TraktSetup]"/>
-    <Model x:Key="Model" Id="0A24888F-63C0-442A-9DF6-431869BDE803"/>
+    <ResourceWrapper x:Key="Dialog_Header_Text" Resource="[Settings.Plugins.Mover.Restore]"/>
+    <Model x:Key="Model" Id="E3010B93-7AD4-41BA-8F13-31760E9D65DE"/>
 
     <ControlTemplate x:Key="Contents_Template">
       <Grid DataContext="{Binding Source={StaticResource Model}}">
@@ -27,13 +27,10 @@
         <Border Grid.ColumnSpan="3" Background="#ed1c24" BorderThickness="0" Height="18" VerticalAlignment="Top" Margin="15,22,15,0"/>
         <Border Grid.ColumnSpan="3" Grid.RowSpan="4" Background="White" BorderThickness="0" Margin="15,40,15,40"/>
         
-        <Image x:Name="Logo" Stretch="Fill" Source="traktlarge.png" Grid.RowSpan="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"
+        <Image x:Name="Logo" Stretch="Fill" Source="moverlarge.png" Grid.RowSpan="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"
                Height="360" Width="180" Margin="15,0,10,0"/>
         
         <Label Content="[Trakt.Description.Line1]" Color="Black" Margin="10,50,10,5" Grid.Column="1"/>
-        
-        <Image x:Name="ItemTypeImage" Stretch="Uniform" Source="qr.png" Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" HorizontalAlignment="Right"
-               Height="{ResolutionResource QRHeight}" VerticalAlignment="Center" Margin="10,0,20,0"/>
         
         <Label Content="[Trakt.Description.Line2]" Color="Black" Margin="10,5,10,5" Grid.Row="1" Grid.Column="1"/>
         

@@ -5,7 +5,7 @@
   PluginId="{C334A0ED-85C3-4657-A0BB-C9A7532121A1}"
   Author="aspik"
   Copyright="GPL"
-  Description="Movies watched status between from one MP2 installation to another">
+  Description="Moves watched states from one MP2 installation to another">
 
   <Version
     PluginVersion="1.0"
@@ -22,21 +22,23 @@
   </DependsOn>
   
   <Register Location="/Models">
-    <Model Id="0A24888F-63C0-442A-9DF6-431869BDE803" Name="TraktSetupModel" ClassName="TraktPluginMP2.Models.TraktSetupModel"/>
-    <Model Id="FF91EFE4-120E-499B-8461-BB3C21DFB3E3" Name="TraktNotificationModel" ClassName="TraktPluginMP2.Models.TraktNotificationModel" />
+    <Model Id="8621AA8C-509A-45FD-B47D-1AE9DDDB46DD" Name="MoverBackupModel" ClassName="Mover.Models.BackupModel"/>
+    <Model Id="E3010B93-7AD4-41BA-8F13-31760E9D65DE" Name="MoverRestoreModel" ClassName="Mover.Models.RestoreModel"/>
   </Register>
 
   <Register Location="/Workflow/States">
-    <DialogState Id="3DB8C6DB-F4E4-4A87-80CE-53339AECF494" Name="TraktSetup" DialogScreen="dialogTraktSetup"
-                 DisplayLabel="[Settings.Plugins.Trakt.TraktSetup]" WorkflowModel="0A24888F-63C0-442A-9DF6-431869BDE803"/>
+    <DialogState Id="DE1A86F8-50D4-4CBF-8CCA-557EEEACD3C4" Name="BackupDialog" DialogScreen="BackupDialog"
+                 DisplayLabel="[Settings.Plugins.Mover.BackupDialog]" WorkflowModel="8621AA8C-509A-45FD-B47D-1AE9DDDB46DD"/>
+    <DialogState Id="821132BC-028F-4B31-A416-C361369E16AA" Name="RestoreDialog" DialogScreen="RestoreDialog"
+                 DisplayLabel="[Settings.Plugins.Mover.RestoreDialog]" WorkflowModel="E3010B93-7AD4-41BA-8F13-31760E9D65DE"/>
   </Register>
 
   <Register Location="/Resources/Language">
-    <Resource Id="TraktLanguage" Directory="Language" Type="Language"/>
+    <Resource Id="MoverLanguage" Directory="Language" Type="Language"/>
   </Register>
 
   <Register Location = "/Resources/Skin">
-    <Resource Id="TraktSkin" Directory="Skin" Type="Skin"/>
+    <Resource Id="MoverSkin" Directory="Skin" Type="Skin"/>
   </Register>
 
   <!-- Root configuration sections -->
@@ -50,29 +52,28 @@
   <!-- Contents of '/Plugins' section -->
   <Register Location="/Configuration/Settings/Plugins">
     <ConfigSection
-      Id="Trakt"
+      Id="Mover"
       Redundant="true"
-      Text="[Settings.Plugins.Trakt]"/>
+      Text="[Settings.Plugins.Mover]"/>
   </Register>
 
-  <!-- Contents of '/Plugins/Trakt' section -->
-  <Register Location="/Configuration/Settings/Plugins/Trakt">
+  <!-- Contents of '/Plugins/Mover' section -->
+  <Register Location="/Configuration/Settings/Plugins/Mover">
     <CustomConfigSetting
-      Id="TraktSetup"
-      Text="[Settings.Plugins.Trakt.TraktSetup]"
-      HelpText="[Settings.Plugins.Trakt.TraktSetup.Help]"
-      ClassName="TraktPluginMP2.Settings.Configuration.TraktSettingsConfiguration"
-      AdditionalData="WorkflowState=3DB8C6DB-F4E4-4A87-80CE-53339AECF494,ConfAppPanel=..."/>
+      Id="MoverBackupConfig"
+      Text="[Settings.Plugins.Mover.BackupConfig]"
+      HelpText="[Settings.Plugins.Mover.BackupConfig.Help]"
+      ClassName="Mover.Settings.Configuration.BackupSettingsConfiguration"
+      AdditionalData="WorkflowState=DE1A86F8-50D4-4CBF-8CCA-557EEEACD3C4,ConfAppPanel=..."/>
+    
+    <CustomConfigSetting
+      Id="MoverRestoreConfig"
+      Text="[Settings.Plugins.Mover.RestoreConfig]"
+      HelpText="[Settings.Plugins.Mover.RestoreConfig.Help]"
+      ClassName="Mover.Settings.Configuration.RestoreSettingsConfiguration"
+      AdditionalData="WorkflowState=821132BC-028F-4B31-A416-C361369E16AA,ConfAppPanel=..."/>
 
   </Register>
-  
-  <!-- Contents of '/Plugins/Trakt' section -->
-  <Register Location="/Configuration/Settings/Plugins/Trakt">
-    <CustomConfigSetting
-      Id="IsScrobbleEnabled"
-      Text="[Settings.Plugins.Trakt.IsScrobbleEnabled]"
-      HelpText="[Settings.Plugins.Trakt.IsScrobbleEnabled.Help]"
-      ClassName="TraktPluginMP2.Settings.IsScrobbleEnabled"/>
-  </Register>
+ 
   
 </Plugin>
