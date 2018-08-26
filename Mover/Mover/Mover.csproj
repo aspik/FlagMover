@@ -39,6 +39,9 @@
     <Reference Include="MediaPortal.UI">
       <HintPath>..\Externals\MediaPortal.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,12 +52,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\MediaLibraryEpisode.cs" />
+    <Compile Include="Entities\MediaLibraryMovie.cs" />
+    <Compile Include="Exceptions\MediaLibraryNotConnectedException.cs" />
+    <Compile Include="FileName.cs" />
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\RestoreModel.cs" />
-    <Compile Include="Mover.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FileOperations.cs" />
+    <Compile Include="Services\IFileOperations.cs" />
+    <Compile Include="Services\IMediaPortalServices.cs" />
+    <Compile Include="Services\IMoverOperations.cs" />
+    <Compile Include="Services\MediaPortalServices.cs" />
+    <Compile Include="Services\MoverOperations.cs" />
     <Compile Include="Settings\Configuration\BackupSettingsConfiguration.cs" />
     <Compile Include="Settings\Configuration\RestoreSettingsConfiguration.cs" />
+    <Compile Include="Utilities\MediaItemAspectsUtl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Language\strings_en.xml" />
@@ -69,6 +82,9 @@
     <Content Include="Skin\default\screens\RestoreDialog.xaml">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
