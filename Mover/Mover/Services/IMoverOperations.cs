@@ -4,5 +4,7 @@
   {
     void BackupMovies();
     void BackupSeries();
+    void RestoreWatchedMovies();
+    void RestoreWatchedSeries();
   }
 }

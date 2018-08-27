@@ -33,6 +33,13 @@ namespace Mover.Utilities
       return MediaItemAspect.TryGetExternalAttribute(mediaItem.Aspects, ExternalIdentifierAspect.SOURCE_IMDB, ExternalIdentifierAspect.TYPE_MOVIE, out id) ? id : null;
     }
 
+    public static uint? GetMovieTmdbId(MediaItem mediaItem)
+    {
+      string id;
+      int tmdbId;
+      return MediaItemAspect.TryGetExternalAttribute(mediaItem.Aspects, ExternalIdentifierAspect.SOURCE_TMDB, ExternalIdentifierAspect.TYPE_MOVIE, out id) && int.TryParse(id, out tmdbId) ? (uint?)tmdbId : null;
+    }
+
     public static int GetMovieYear(MediaItem mediaItem)
     {
       DateTime dtValue;

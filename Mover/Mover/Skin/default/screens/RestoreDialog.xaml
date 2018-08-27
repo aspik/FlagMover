@@ -47,17 +47,8 @@
             <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
 
-          <Button x:Name="Authorize" Content="[Trakt.Authorize]" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Column="0"
-                  Command="{Command AuthorizeUser}" Margin="10" HorizontalContentAlignment="Center"/>
-
           <Button x:Name="Sync" Content="[Trakt.Sync]" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                  Command="{Command SyncMediaToTrakt}" Grid.Column="1" Margin="10" HorizontalContentAlignment="Center">
-            <Button.IsEnabled>
-              <MultiBinding Converter="{StaticResource ExpressionMultiValueConverter}" ConverterParameter="{}{0} &amp;&amp; {1}">
-                <Binding Path="IsUserAuthorized"/>
-                <Binding Path="!IsSynchronizing"/>
-              </MultiBinding>
-            </Button.IsEnabled>
+                  Command="{Command RestoreLibrary}" Grid.Column="1" Margin="10" HorizontalContentAlignment="Center">
           </Button>
 
           <Button x:Name="Ok" Content="[Trakt.Close]" HorizontalAlignment="Stretch" 

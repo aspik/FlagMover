@@ -1,4 +1,6 @@
-﻿using MediaPortal.Common.Logging;
+﻿using System.Threading.Tasks;
+using MediaPortal.Common.Logging;
+using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.Threading;
 using MediaPortal.Common.UserManagement;
 using MediaPortal.UI.ServerCommunication;
@@ -12,5 +14,6 @@ namespace Mover.Services
     IServerConnectionManager GetServerConnectionManager();
     IUserManagement GetUserManagement();
     string GetMoverUserHomePath();
+    Task<bool> MarkAsWatched(MediaItem mediaItem);
   }
 }
