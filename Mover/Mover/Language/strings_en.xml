@@ -1,5 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  
-
+  <string name="Settings.Plugins.Mover">Mover</string>
+  <string name="Settings.Plugins.Mover.BackupConfig">Backup</string>
+  <string name="Settings.Plugins.Mover.BackupConfig.Help">Backup watched flags for movies and series</string>
+  <string name="Settings.Plugins.Mover.RestoreConfig">Restore</string>
+  <string name="Settings.Plugins.Mover.RestoreConfig.Help">Restore watched flags for movies and series</string>
+  <string name="Settings.Plugins.Mover.Backup">Backup watched series and movies</string>
+  <string name="Settings.Plugins.Mover.Restore">Restore watched series and movies</string>
+  <string name="Mover.BackupLibrary">Backup</string>
+  <string name="Mover.RestoreLibrary">Restore</string>
+  <string name="Mover.Close">Close</string>
+  <string name="Mover.Ready">Ready</string>
+  <string name="Backup.Series">Backing up series...</string>
+  <string name="Backup.Movies">Backing up movies...</string>
+  <string name="Restore.Movies">Restoring movies...</string>
+  <string name="Restore.Series">Restoring series...</string>
+  <string name="Backup.Finished">Backup finished</string>
+  <string name="Restore.Finished">Restore finished</string>
+  <string name="Backup.Failed">Backup failed</string>
+  <string name="Restore.Failed">Restore failed</string>
 </resources>

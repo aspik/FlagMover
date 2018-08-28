@@ -48,16 +48,16 @@ namespace Mover.Models
         IThreadPool threadPool = _mediaPortalServices.GetThreadPool();
         threadPool.Add(() =>
         {
-          Status = "[BackupMovies]";
+          Status = "[Backup.Movies]";
           _moverOperations.BackupMovies();
-          Status = "[BackupSeries]";
+          Status = "[Backup.Series]";
           _moverOperations.BackupSeries();
-          Status = "[BackupFinished]";
+          Status = "[Backup.Finished]";
         }, ThreadPriority.BelowNormal);
       }
       catch (Exception ex)
       {
-        Status = "[BackupFailed]";
+        Status = "[Backup.Failed]";
         _mediaPortalServices.GetLogger().Error(ex.Message);
       }
     }
@@ -69,7 +69,7 @@ namespace Mover.Models
 
     public void EnterModelContext(NavigationContext oldContext, NavigationContext newContext)
     {
-      Status = "Ready";
+      Status = "[Mover.Ready]";
     }
 
     public void ExitModelContext(NavigationContext oldContext, NavigationContext newContext)
