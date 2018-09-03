@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mover.Exceptions
+namespace FlagMover.Exceptions
 {
   public class MediaLibraryNotConnectedException : Exception
   {

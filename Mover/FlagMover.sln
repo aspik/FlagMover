@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mover", "Mover\Mover.csproj", "{6E825884-610B-4410-8F8C-A60E0D859F5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlagMover", "Mover\FlagMover.csproj", "{6E825884-610B-4410-8F8C-A60E0D859F5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
 EndProject

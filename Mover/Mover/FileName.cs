@@ -1,4 +1,4 @@
-﻿namespace Mover
+﻿namespace FlagMover
 {
   public class FileName
   {

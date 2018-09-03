@@ -5,7 +5,7 @@ using MediaPortal.Common.Threading;
 using MediaPortal.Common.UserManagement;
 using MediaPortal.UI.ServerCommunication;
 
-namespace Mover.Services
+namespace FlagMover.Services
 {
   public interface IMediaPortalServices
   {

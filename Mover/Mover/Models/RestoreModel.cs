@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using FlagMover.Services;
 using MediaPortal.Common.General;
 using MediaPortal.Common.Threading;
 using MediaPortal.UI.Presentation.Models;
 using MediaPortal.UI.Presentation.Workflow;
-using Mover.Services;
 
-namespace Mover.Models
+namespace FlagMover.Models
 {
   public class RestoreModel : IWorkflowModel
   {

@@ -1,6 +1,6 @@
 ﻿using MediaPortal.Common.Configuration.ConfigurationClasses;
 
-namespace Mover.Settings.Configuration
+namespace FlagMover.Settings.Configuration
 {
   public class RestoreSettingsConfiguration : CustomConfigSetting
   {

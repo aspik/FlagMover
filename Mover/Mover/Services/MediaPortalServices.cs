@@ -10,7 +10,7 @@ using MediaPortal.Common.UserManagement;
 using MediaPortal.UiComponents.Media.MediaItemActions;
 using MediaPortal.UI.ServerCommunication;
 
-namespace Mover.Services
+namespace FlagMover.Services
 {
   public class MediaPortalServices : IMediaPortalServices
   {

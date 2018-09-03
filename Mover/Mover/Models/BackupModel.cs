@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using FlagMover.Services;
 using MediaPortal.Common.General;
 using MediaPortal.Common.Threading;
 using MediaPortal.UI.Presentation.Models;
 using MediaPortal.UI.Presentation.Workflow;
-using Mover.Services;
 
-namespace Mover.Models
+namespace FlagMover.Models
 {
   public class BackupModel : IWorkflowModel
   {
@@ -51,8 +51,8 @@ namespace Mover.Models
           Status = "[Backup.Movies]";
           _moverOperations.BackupMovies();
           Status = "[Backup.Series]";
-          _moverOperations.BackupSeries();
-          Status = "[Backup.Finished]";
+          BackupSeriesResult seriesResult = _moverOperations.BackupSeries();
+          Status = "[Backup.Finished]" + " Collected: " + seriesResult.CollectedEpisodesCount + " Watched: " + seriesResult.WatchedEpisodesCount;
         }, ThreadPriority.BelowNormal);
       }
       catch (Exception ex)

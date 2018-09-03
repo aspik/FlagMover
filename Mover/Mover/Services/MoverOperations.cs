@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using FlagMover.Entities;
+using FlagMover.Exceptions;
+using FlagMover.Utilities;
 using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.MediaManagement.DefaultItemAspects;
 using MediaPortal.Common.MediaManagement.MLQueries;
 using MediaPortal.Common.SystemCommunication;
 using MediaPortal.Common.UserManagement;
-using Mover.Entities;
-using Mover.Exceptions;
-using Mover.Utilities;
 using Newtonsoft.Json;
 
-namespace Mover.Services
+namespace FlagMover.Services
 {
   public class MoverOperations : IMoverOperations
   {
@@ -64,8 +64,9 @@ namespace Mover.Services
       SaveLibraryMovies(watchedMovies);
     }
 
-    public void BackupSeries()
+    public BackupSeriesResult BackupSeries()
     {
+      BackupSeriesResult result = new BackupSeriesResult {WatchedEpisodesCount = 0, CollectedEpisodesCount = 0};
       Guid[] types =
       {
         MediaAspect.ASPECT_ID, EpisodeAspect.ASPECT_ID, VideoAspect.ASPECT_ID, ImporterAspect.ASPECT_ID,
@@ -86,21 +87,50 @@ namespace Mover.Services
       }
 
       IList<MediaItem> collectedEpisodeMediaItems = contentDirectory.SearchAsync(new MediaItemQuery(types, null, null), true, userProfile, false).Result;
+      result.CollectedEpisodesCount = collectedEpisodeMediaItems.Count;
       List<MediaItem> watchedEpisodeMediaItems = collectedEpisodeMediaItems.Where(MediaItemAspectsUtl.IsWatched).ToList();
       IList<MediaLibraryEpisode> watchedEpisodes = new List<MediaLibraryEpisode>();
 
       foreach (MediaItem episodeMediaItem in watchedEpisodeMediaItems)
       {
-        watchedEpisodes.Add(new MediaLibraryEpisode
+        List<int> episodeNumbers = MediaItemAspectsUtl.GetEpisodeNumbers(episodeMediaItem);
+        if (!episodeNumbers.Any())
         {
-          ShowTitle = MediaItemAspectsUtl.GetSeriesTitle(episodeMediaItem),
-          ShowImdb = MediaItemAspectsUtl.GetSeriesImdbId(episodeMediaItem),
-          ShowTvdb = MediaItemAspectsUtl.GetTvdbId(episodeMediaItem),
-          Season = MediaItemAspectsUtl.GetSeasonIndex(episodeMediaItem),
-          Number = MediaItemAspectsUtl.GetEpisodeIndex(episodeMediaItem)
-        });
+          break;
+        }
+
+        bool isMultiEpisode = episodeNumbers.Count > 1;
+
+        if (isMultiEpisode)
+        {
+          foreach (int epNumber in episodeNumbers)
+          {
+            watchedEpisodes.Add(new MediaLibraryEpisode
+            {
+              ShowTitle = MediaItemAspectsUtl.GetSeriesTitle(episodeMediaItem),
+              ShowImdb = MediaItemAspectsUtl.GetSeriesImdbId(episodeMediaItem),
+              ShowTvdb = MediaItemAspectsUtl.GetTvdbId(episodeMediaItem),
+              Season = MediaItemAspectsUtl.GetSeasonIndex(episodeMediaItem),
+              Number = epNumber
+            });
+          }
+        }
+        else
+        {
+          watchedEpisodes.Add(new MediaLibraryEpisode
+          {
+            ShowTitle = MediaItemAspectsUtl.GetSeriesTitle(episodeMediaItem),
+            ShowImdb = MediaItemAspectsUtl.GetSeriesImdbId(episodeMediaItem),
+            ShowTvdb = MediaItemAspectsUtl.GetTvdbId(episodeMediaItem),
+            Season = MediaItemAspectsUtl.GetSeasonIndex(episodeMediaItem),
+            Number = MediaItemAspectsUtl.GetEpisodeNumbers(episodeMediaItem).FirstOrDefault()
+          });
+        }
       }
       SaveLibraryEpisodes(watchedEpisodes);
+      result.WatchedEpisodesCount = watchedEpisodes.Count;
+
+      return result;
     }
 
     public void RestoreWatchedMovies()
@@ -169,7 +199,8 @@ namespace Mover.Services
         MediaAspect.ASPECT_ID, EpisodeAspect.ASPECT_ID, VideoAspect.ASPECT_ID, ImporterAspect.ASPECT_ID,
         ProviderResourceAspect.ASPECT_ID, ExternalIdentifierAspect.ASPECT_ID
       };
-      var contentDirectory = _mediaPortalServices.GetServerConnectionManager().ContentDirectory;
+
+      IContentDirectory contentDirectory = _mediaPortalServices.GetServerConnectionManager().ContentDirectory;
       if (contentDirectory == null)
       {
         throw new MediaLibraryNotConnectedException("ML not connected");
@@ -183,7 +214,6 @@ namespace Mover.Services
       }
 
       IList<MediaItem> localEpisodes = contentDirectory.SearchAsync(new MediaItemQuery(types, null, null), true, userProfile, false).Result;
-
       ILookup<string, MediaLibraryEpisode> onlineEpisodes = watchedEpisodes.ToLookup(twe => CreateLookupKey(twe), twe => twe);
       
       foreach (MediaItem episode in localEpisodes)
@@ -277,11 +307,11 @@ namespace Mover.Services
 
     private string CreateLookupKey(MediaItem episode)
     {
-      var tvdid = MediaItemAspectsUtl.GetTvdbId(episode);
-      var seasonIndex = MediaItemAspectsUtl.GetSeasonIndex(episode);
-      var episodeIndex = MediaItemAspectsUtl.GetEpisodeIndex(episode);
+      uint tvdbId = MediaItemAspectsUtl.GetTvdbId(episode);
+      int seasonIndex = MediaItemAspectsUtl.GetSeasonIndex(episode);
+      int episodeIndex = MediaItemAspectsUtl.GetEpisodeNumbers(episode).FirstOrDefault();
 
-      return string.Format("{0}_{1}_{2}", tvdid, seasonIndex, episodeIndex);
+      return string.Format("{0}_{1}_{2}", tvdbId, seasonIndex, episodeIndex);
     }
   }
 }

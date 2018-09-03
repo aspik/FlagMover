@@ -7,8 +7,8 @@
     <ProjectGuid>{6E825884-610B-4410-8F8C-A60E0D859F5B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mover</RootNamespace>
-    <AssemblyName>Mover</AssemblyName>
+    <RootNamespace>FlagMover</RootNamespace>
+    <AssemblyName>FlagMover</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupSeriesResult.cs" />
     <Compile Include="Entities\MediaLibraryEpisode.cs" />
     <Compile Include="Entities\MediaLibraryMovie.cs" />
     <Compile Include="Exceptions\MediaLibraryNotConnectedException.cs" />

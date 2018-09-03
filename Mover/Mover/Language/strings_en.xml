@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="Settings.Plugins.Mover">Mover</string>
+  <string name="Settings.Plugins.Mover">Flag Mover</string>
   <string name="Settings.Plugins.Mover.BackupConfig">Backup</string>
   <string name="Settings.Plugins.Mover.BackupConfig.Help">Backup watched flags for movies and series</string>
   <string name="Settings.Plugins.Mover.RestoreConfig">Restore</string>

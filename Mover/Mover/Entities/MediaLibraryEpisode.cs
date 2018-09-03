@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Mover.Entities
+namespace FlagMover.Entities
 {
   public class MediaLibraryEpisode
   {

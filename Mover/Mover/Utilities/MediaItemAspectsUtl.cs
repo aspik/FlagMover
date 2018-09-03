@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.MediaManagement.DefaultItemAspects;
 using MediaPortal.Common.UserProfileDataManagement;
 
-namespace Mover.Utilities
+namespace FlagMover.Utilities
 {
   public static class MediaItemAspectsUtl
   {
@@ -81,11 +82,17 @@ namespace Mover.Utilities
       return MediaItemAspect.TryGetAttribute(mediaItem.Aspects, EpisodeAspect.ATTR_SEASON, out value) ? value : 0;
     }
 
-    public static int GetEpisodeIndex(MediaItem mediaItem)
+    public static List<int> GetEpisodeNumbers(MediaItem mediaItem)
     {
-      // TODO: multi episode files?!
-      List<int> intList;
-      return MediaItemAspect.TryGetAttribute(mediaItem.Aspects, EpisodeAspect.ATTR_EPISODE, out intList) && intList.Any() ? intList.First() : intList.FirstOrDefault();
+      List<int> episodeNumbers = new List<int>();
+      if (MediaItemAspect.TryGetAttribute(mediaItem.Aspects, EpisodeAspect.ATTR_EPISODE, out IEnumerable episodes))
+      {
+        foreach (int episode in episodes.Cast<int>())
+        {
+          episodeNumbers.Add(episode);
+        }
+      }
+      return episodeNumbers;
     }
   }
 }

@@ -13,7 +13,7 @@
     CurrentAPI="1"/>
 
   <Runtime>
-    <Assembly FileName="Mover.dll"/>
+    <Assembly FileName="FlagMover.dll"/>
   </Runtime>
 
   <DependsOn>
@@ -22,8 +22,8 @@
   </DependsOn>
   
   <Register Location="/Models">
-    <Model Id="8621AA8C-509A-45FD-B47D-1AE9DDDB46DD" Name="MoverBackupModel" ClassName="Mover.Models.BackupModel"/>
-    <Model Id="E3010B93-7AD4-41BA-8F13-31760E9D65DE" Name="MoverRestoreModel" ClassName="Mover.Models.RestoreModel"/>
+    <Model Id="8621AA8C-509A-45FD-B47D-1AE9DDDB46DD" Name="MoverBackupModel" ClassName="FlagMover.Models.BackupModel"/>
+    <Model Id="E3010B93-7AD4-41BA-8F13-31760E9D65DE" Name="MoverRestoreModel" ClassName="FlagMover.Models.RestoreModel"/>
   </Register>
 
   <Register Location="/Workflow/States">
@@ -63,14 +63,14 @@
       Id="MoverBackupConfig"
       Text="[Settings.Plugins.Mover.BackupConfig]"
       HelpText="[Settings.Plugins.Mover.BackupConfig.Help]"
-      ClassName="Mover.Settings.Configuration.BackupSettingsConfiguration"
+      ClassName="FlagMover.Settings.Configuration.BackupSettingsConfiguration"
       AdditionalData="WorkflowState=DE1A86F8-50D4-4CBF-8CCA-557EEEACD3C4,ConfAppPanel=..."/>
     
     <CustomConfigSetting
       Id="MoverRestoreConfig"
       Text="[Settings.Plugins.Mover.RestoreConfig]"
       HelpText="[Settings.Plugins.Mover.RestoreConfig.Help]"
-      ClassName="Mover.Settings.Configuration.RestoreSettingsConfiguration"
+      ClassName="FlagMover.Settings.Configuration.RestoreSettingsConfiguration"
       AdditionalData="WorkflowState=821132BC-028F-4B31-A416-C361369E16AA,ConfAppPanel=..."/>
 
   </Register>

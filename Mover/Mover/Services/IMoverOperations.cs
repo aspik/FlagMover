@@ -1,9 +1,9 @@
-﻿namespace Mover.Services
+﻿namespace FlagMover.Services
 {
   public interface IMoverOperations
   {
     void BackupMovies();
-    void BackupSeries();
+    BackupSeriesResult BackupSeries();
     void RestoreWatchedMovies();
     void RestoreWatchedSeries();
   }
