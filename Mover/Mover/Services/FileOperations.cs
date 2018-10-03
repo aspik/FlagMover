@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace FlagMover.Services
@@ -28,6 +29,35 @@ namespace FlagMover.Services
     public DirectoryInfo CreateDirectory(string path)
     {
       return Directory.CreateDirectory(path);
+    }
+
+    public IDictionary<string, string> GetLogicalDrivers()
+    {
+      IDictionary<string, string> drivers = new Dictionary<string, string>();
+      foreach (DriveInfo driveInfo in DriveInfo.GetDrives())
+      {
+        if ((driveInfo.DriveType == DriveType.Fixed || driveInfo.DriveType == DriveType.Removable) && driveInfo.IsReady)
+        {
+          drivers.Add("[" + driveInfo.Name + "]"+ " " +driveInfo.VolumeLabel, driveInfo.Name);
+        }
+      }
+
+      return drivers;
+    }
+
+    public IDictionary<string, string> GetDirectories(string path)
+    {
+      IDictionary<string, string> directories = new Dictionary<string, string>();
+      DirectoryInfo directoryInfo = new DirectoryInfo(path);
+      foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+      {
+        if (directory.Attributes == FileAttributes.Directory)
+        {
+          directories.Add(directory.Name, directory.FullName);
+        }
+      }
+
+      return directories;
     }
   }
 }

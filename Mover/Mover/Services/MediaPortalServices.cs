@@ -36,7 +36,7 @@ namespace FlagMover.Services
 
     public string GetMoverUserHomePath()
     {
-      string rootPath = ServiceRegistration.Get<IPathManager>().GetPath(@"<DATA>\Mover\");
+      string rootPath = ServiceRegistration.Get<IPathManager>().GetPath(@"<DATA>\FlagMover\");
       string userProfileId = GetUserManagement().CurrentUser.ProfileId.ToString();
 
       return Path.Combine(rootPath, userProfileId);

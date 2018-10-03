@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace FlagMover.Services
@@ -10,5 +11,7 @@ namespace FlagMover.Services
     string FileReadAllText(string file);
     bool DirectoryExists(string path);
     DirectoryInfo CreateDirectory(string path);
+    IDictionary<string, string> GetLogicalDrivers();
+    IDictionary<string, string> GetDirectories(string path);
   }
 }

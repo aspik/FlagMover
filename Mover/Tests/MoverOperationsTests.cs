@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FlagMover;
 using FlagMover.Entities;
+using FlagMover.Models;
 using FlagMover.Services;
 using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.MediaManagement.MLQueries;
@@ -29,10 +30,26 @@ namespace Tests
       IMoverOperations operations = new MoverOperations(mediaPortalServices, fileOperations);
 
       // Act
-      BackupSeriesResult result = operations.BackupSeries();
+      BackupSeriesResult result = operations.BackupSeries("");
 
       // Assert
       Assert.Equal(2, result.WatchedEpisodesCount);
+    }
+
+    [Fact]
+    public void EnteringModelFillsItemsTreeWithDrivers()
+    {
+      // Arrange
+      IMediaPortalServices mediaPortalServices = Substitute.For<IMediaPortalServices>();
+      IFileOperations fileOperations = new FileOperations();
+      IMoverOperations operations = Substitute.For<IMoverOperations>();
+      BackupModel backupModel = null;//new BackupModel(mediaPortalServices, operations, fileOperations);
+      
+      // Act
+      backupModel.EnterModelContext(null, null);
+
+      // Assert
+      Assert.NotNull(backupModel.DirectoryTree);
     }
   }
 }

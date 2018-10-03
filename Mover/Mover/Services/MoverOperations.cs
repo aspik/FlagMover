@@ -26,8 +26,9 @@ namespace FlagMover.Services
       _fileOperations = fileOperations;
     }
 
-    public void BackupMovies()
+    public BackupMoviesResult BackupMovies(string path)
     {
+      BackupMoviesResult result = new BackupMoviesResult {CollectedMoviesCount = 0, WatchedMoviesCount = 0};
       Guid[] types =
       {
         MediaAspect.ASPECT_ID, MovieAspect.ASPECT_ID, VideoAspect.ASPECT_ID, ImporterAspect.ASPECT_ID,
@@ -49,6 +50,7 @@ namespace FlagMover.Services
       }
 
       IList<MediaItem> collectedMovieMediaItems = contentDirectory.SearchAsync(new MediaItemQuery(types, null, null), true, userProfile, false).Result;
+      result.CollectedMoviesCount = collectedMovieMediaItems.Count;
       List<MediaItem> watchedMovieMediaItems = collectedMovieMediaItems.Where(MediaItemAspectsUtl.IsWatched).ToList();
       IList<MediaLibraryMovie> watchedMovies = new List<MediaLibraryMovie>();
 
@@ -61,10 +63,13 @@ namespace FlagMover.Services
           Year = MediaItemAspectsUtl.GetMovieYear(movieMediaItem)
         });
       }
-      SaveLibraryMovies(watchedMovies);
+      SaveLibraryMovies(path, watchedMovies);
+      result.WatchedMoviesCount = watchedMovies.Count;
+
+      return result;
     }
 
-    public BackupSeriesResult BackupSeries()
+    public BackupSeriesResult BackupSeries(string path)
     {
       BackupSeriesResult result = new BackupSeriesResult {WatchedEpisodesCount = 0, CollectedEpisodesCount = 0};
       Guid[] types =
@@ -127,21 +132,25 @@ namespace FlagMover.Services
           });
         }
       }
-      SaveLibraryEpisodes(watchedEpisodes);
+      SaveLibraryEpisodes(path, watchedEpisodes);
       result.WatchedEpisodesCount = watchedEpisodes.Count;
 
       return result;
     }
 
-    public void RestoreWatchedMovies()
+    public void RestoreWatchedMovies(string path)
     {
-      IList<MediaLibraryMovie> watchedMovies = new List<MediaLibraryMovie>();
+      IList<MediaLibraryMovie> watchedMovies;
 
-      string watchedMoviesPath = Path.Combine(_mediaPortalServices.GetMoverUserHomePath(), FileName.WatchedMovies.Value);
+      string watchedMoviesPath = Path.Combine(path, FileName.WatchedMovies.Value);
       if (_fileOperations.FileExists(watchedMoviesPath))
       {
         string watchedMoviesJson = _fileOperations.FileReadAllText(watchedMoviesPath);
         watchedMovies = JsonConvert.DeserializeObject<List<MediaLibraryMovie>>(watchedMoviesJson);
+      }
+      else
+      {
+        throw new Exception("Wrong movies path");
       }
 
       Guid[] types =
@@ -183,15 +192,19 @@ namespace FlagMover.Services
       }
     }
 
-    public void RestoreWatchedSeries()
+    public void RestoreWatchedSeries(string path)
     {
-      IList<MediaLibraryEpisode> watchedEpisodes = new List<MediaLibraryEpisode>();
+      IList<MediaLibraryEpisode> watchedEpisodes;
 
-      string watchedEpisodesPath = Path.Combine(_mediaPortalServices.GetMoverUserHomePath(), FileName.WatchedEpisodes.Value);
+      string watchedEpisodesPath = Path.Combine(path, FileName.WatchedEpisodes.Value);
       if (_fileOperations.FileExists(watchedEpisodesPath))
       {
         string watchedEpisodesJson = _fileOperations.FileReadAllText(watchedEpisodesPath);
         watchedEpisodes = JsonConvert.DeserializeObject<List<MediaLibraryEpisode>>(watchedEpisodesJson);
+      }
+      else
+      {
+        throw new Exception("Wrong series path");
       }
 
       Guid[] types =
@@ -235,26 +248,16 @@ namespace FlagMover.Services
       }
     }
 
-    private void SaveLibraryMovies(IList<MediaLibraryMovie> watchedMovies)
+    private void SaveLibraryMovies(string path, IList<MediaLibraryMovie> watchedMovies)
     {
-      string moverUserHomePath = _mediaPortalServices.GetMoverUserHomePath();
-      if (!_fileOperations.DirectoryExists(moverUserHomePath))
-      {
-        _fileOperations.CreateDirectory(moverUserHomePath);
-      }
-      string libraryMoviesPath = Path.Combine(moverUserHomePath, FileName.WatchedMovies.Value);
+      string libraryMoviesPath = Path.Combine(path, FileName.WatchedMovies.Value);
       string libraryMoviesJson = JsonConvert.SerializeObject(watchedMovies);
       _fileOperations.FileWriteAllText(libraryMoviesPath, libraryMoviesJson, Encoding.UTF8);
     }
 
-    private void SaveLibraryEpisodes(IList<MediaLibraryEpisode> watchedEpisodes)
+    private void SaveLibraryEpisodes(string path, IList<MediaLibraryEpisode> watchedEpisodes)
     {
-      string moverUserHomePath = _mediaPortalServices.GetMoverUserHomePath();
-      if (!_fileOperations.DirectoryExists(moverUserHomePath))
-      {
-        _fileOperations.CreateDirectory(moverUserHomePath);
-      }
-      string libraryMoviesPath = Path.Combine(moverUserHomePath, FileName.WatchedEpisodes.Value);
+      string libraryMoviesPath = Path.Combine(path, FileName.WatchedEpisodes.Value);
       string libraryMoviesJson = JsonConvert.SerializeObject(watchedEpisodes);
       _fileOperations.FileWriteAllText(libraryMoviesPath, libraryMoviesJson, Encoding.UTF8);
     }
@@ -297,8 +300,9 @@ namespace FlagMover.Services
       else
       {
         if (episode.ShowTitle == null)
+        {
           return episode.GetHashCode().ToString();
-
+        }
         show = episode.ShowTitle;
       }
 

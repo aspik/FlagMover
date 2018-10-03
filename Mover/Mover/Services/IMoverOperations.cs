@@ -2,9 +2,9 @@
 {
   public interface IMoverOperations
   {
-    void BackupMovies();
-    BackupSeriesResult BackupSeries();
-    void RestoreWatchedMovies();
-    void RestoreWatchedSeries();
+    BackupMoviesResult BackupMovies(string path);
+    BackupSeriesResult BackupSeries(string path);
+    void RestoreWatchedMovies(string path);
+    void RestoreWatchedSeries(string path);
   }
 }

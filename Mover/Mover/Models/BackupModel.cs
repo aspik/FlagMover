@@ -1,45 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using FlagMover.Services;
-using MediaPortal.Common.General;
 using MediaPortal.Common.Threading;
+using MediaPortal.UI.Presentation.DataObjects;
 using MediaPortal.UI.Presentation.Models;
 using MediaPortal.UI.Presentation.Workflow;
 
 namespace FlagMover.Models
 {
-  public class BackupModel : IWorkflowModel
+  public class BackupModel : BaseModel, IWorkflowModel
   {
     private static readonly Guid BACKUP_MODEL_ID = new Guid("8621AA8C-509A-45FD-B47D-1AE9DDDB46DD");
-
-    private readonly IMediaPortalServices _mediaPortalServices;
-    private readonly IMoverOperations _moverOperations;
-
-    private readonly AbstractProperty _statusProperty = new WProperty(typeof(string), string.Empty);
-
-    public BackupModel()
-    {
-      _mediaPortalServices = new MediaPortalServices();
-      _moverOperations = new MoverOperations(_mediaPortalServices, new FileOperations());
-    }
-
-    public BackupModel(IMediaPortalServices mediaPortalServices, IMoverOperations moverOperations)
-    {
-      _mediaPortalServices = mediaPortalServices;
-      _moverOperations = moverOperations;
-    }
-
-    public AbstractProperty StatusProperty
-    {
-      get { return _statusProperty; }
-    }
-
-    public string Status
-    {
-      get { return (string)_statusProperty.GetValue(); }
-      set { _statusProperty.SetValue(value); }
-    }
 
     public void BackupLibrary()
     {
@@ -49,10 +20,10 @@ namespace FlagMover.Models
         threadPool.Add(() =>
         {
           Status = "[Backup.Movies]";
-          _moverOperations.BackupMovies();
+          _moverOperations.BackupMovies(_selectedPath);
           Status = "[Backup.Series]";
-          BackupSeriesResult seriesResult = _moverOperations.BackupSeries();
-          Status = "[Backup.Finished]" + " Collected: " + seriesResult.CollectedEpisodesCount + " Watched: " + seriesResult.WatchedEpisodesCount;
+          _moverOperations.BackupSeries(_selectedPath);
+          Status = "[Backup.Finished]";
         }, ThreadPriority.BelowNormal);
       }
       catch (Exception ex)
@@ -70,11 +41,13 @@ namespace FlagMover.Models
     public void EnterModelContext(NavigationContext oldContext, NavigationContext newContext)
     {
       Status = "[Mover.Ready]";
+      _directoryTree = new ItemsList();
+      RefreshDirectoryTree(_directoryTree, ".");
     }
 
     public void ExitModelContext(NavigationContext oldContext, NavigationContext newContext)
     {
-
+      _directoryTree = null;
     }
 
     public void ChangeModelContext(NavigationContext oldContext, NavigationContext newContext, bool push)

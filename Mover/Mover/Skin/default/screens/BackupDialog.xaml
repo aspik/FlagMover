@@ -10,20 +10,36 @@
     <Model x:Key="Model" Id="8621AA8C-509A-45FD-B47D-1AE9DDDB46DD"/>
 
     <ControlTemplate x:Key="Contents_Template">
-      <Grid DataContext="{Binding Source={StaticResource Model}}">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+      <Grid Margin="10" DataContext="{Binding Source={StaticResource Model}}">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <Label Content="{Binding Path=Status}" Color="White"  Margin="10,20,10,20" Grid.Row="0" Grid.Column="1"/>
+        
+        <TreeView Grid.Row="1" Grid.Column="1" Style="{ThemeResource SingleMarkableTreeViewStyle}" SetFocusPrio="DefaultLow"
+                  RadioButton.GroupContext="RadioButtonGroup"
+                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                  ForceExpander="True"
+                  ItemsSource="{Binding Path=DirectoryTree,Mode=OneTime}">
+          <TreeView.Resources>
+            <BindingWrapper x:Key="Expander_Binding" Binding="{Binding Path=AdditionalProperties[Expansion].IsExpanded,Mode=OneWayToSource}"/>
 
-        <Grid Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+            <!-- Command not necessary here. We use a dummy. -->
+            <ResourceWrapper x:Key="Expander_Command"/>
+
+            <!-- Checker_Command isn't necessary here - the selection state will be propagated via the Selected property.
+               We use a dummy. -->
+            <ResourceWrapper x:Key="Checker_Command"/>
+          </TreeView.Resources>
+        </TreeView>
+        
+        <Grid Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
