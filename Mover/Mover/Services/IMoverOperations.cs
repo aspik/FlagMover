@@ -2,9 +2,32 @@
 {
   public interface IMoverOperations
   {
-    BackupMoviesResult BackupMovies(string path);
-    BackupSeriesResult BackupSeries(string path);
-    void RestoreWatchedMovies(string path);
-    void RestoreWatchedSeries(string path);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    BackupResult BackupMovies(string path);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    BackupResult BackupSeries(string path);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    RestoreResult RestoreWatchedMovies(string path);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    RestoreResult RestoreWatchedSeries(string path);
   }
 }

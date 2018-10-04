@@ -13,7 +13,6 @@ namespace FlagMover.Services
     ILogger GetLogger();
     IServerConnectionManager GetServerConnectionManager();
     IUserManagement GetUserManagement();
-    string GetMoverUserHomePath();
     Task<bool> MarkAsWatched(MediaItem mediaItem);
   }
 }

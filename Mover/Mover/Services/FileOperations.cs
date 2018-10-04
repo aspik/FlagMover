@@ -21,16 +21,6 @@ namespace FlagMover.Services
       return File.ReadAllText(path);
     }
 
-    public bool DirectoryExists(string path)
-    {
-      return Directory.Exists(path);
-    }
-
-    public DirectoryInfo CreateDirectory(string path)
-    {
-      return Directory.CreateDirectory(path);
-    }
-
     public IDictionary<string, string> GetLogicalDrivers()
     {
       IDictionary<string, string> drivers = new Dictionary<string, string>();

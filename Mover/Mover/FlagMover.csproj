@@ -52,8 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackupMoviesResult.cs" />
-    <Compile Include="BackupSeriesResult.cs" />
+    <Compile Include="BackupResult.cs" />
     <Compile Include="Entities\MediaLibraryEpisode.cs" />
     <Compile Include="Entities\MediaLibraryMovie.cs" />
     <Compile Include="Exceptions\MediaLibraryNotConnectedException.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\RestoreModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestoreResult.cs" />
     <Compile Include="Services\FileOperations.cs" />
     <Compile Include="Services\IFileOperations.cs" />
     <Compile Include="Services\IMediaPortalServices.cs" />

@@ -34,14 +34,6 @@ namespace FlagMover.Services
       return ServiceRegistration.Get<IUserManagement>();
     }
 
-    public string GetMoverUserHomePath()
-    {
-      string rootPath = ServiceRegistration.Get<IPathManager>().GetPath(@"<DATA>\FlagMover\");
-      string userProfileId = GetUserManagement().CurrentUser.ProfileId.ToString();
-
-      return Path.Combine(rootPath, userProfileId);
-    }
-
     public async Task<bool> MarkAsWatched(MediaItem mediaItem)
     {
       bool result = false;
@@ -54,13 +46,13 @@ namespace FlagMover.Services
           if (processResult.Success && processResult.Result != ContentDirectoryMessaging.MediaItemChangeType.None)
           {
             ContentDirectoryMessaging.SendMediaItemChangedMessage(mediaItem, processResult.Result);
-            GetLogger().Info("Marking media item '{0}' as watched", mediaItem.GetType());
+            GetLogger().Info("FlagMover: marking media item '{0}' as watched", mediaItem.GetType());
             result = true;
           }
         }
         catch (Exception ex)
         {
-          GetLogger().Error("Marking media item '{0}' as watched failed:", mediaItem.GetType(), ex);
+          GetLogger().Error("FlagMover:: marking media item '{0}' as watched failed:", mediaItem.GetType(), ex);
           result = false;
         }
       }

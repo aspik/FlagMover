@@ -9,8 +9,6 @@ namespace FlagMover.Services
     void FileWriteAllText(string path, string contents, Encoding encoding);
     bool FileExists(string path);
     string FileReadAllText(string file);
-    bool DirectoryExists(string path);
-    DirectoryInfo CreateDirectory(string path);
     IDictionary<string, string> GetLogicalDrivers();
     IDictionary<string, string> GetDirectories(string path);
   }
