@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FlagMover.Entities;
 using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.MediaManagement.DefaultItemAspects;
+using MediaPortal.Common.UserProfileDataManagement;
 
 namespace Tests
 {
@@ -10,7 +11,7 @@ namespace Tests
   {
     public MediaItem Movie { get; }
 
-    public MockedDatabaseMovie(MediaLibraryMovie movie)
+    public MockedDatabaseMovie(MediaLibraryMovie movie, int playPercentage)
     {
       IDictionary<Guid, IList<MediaItemAspect>> movieAspects = new Dictionary<Guid, IList<MediaItemAspect>>();
       MultipleMediaItemAspect resourceAspect = new MultipleMediaItemAspect(ProviderResourceAspect.Metadata);
@@ -26,9 +27,12 @@ namespace Tests
 
       SingleMediaItemAspect importerAspect = new SingleMediaItemAspect(ImporterAspect.Metadata);
       importerAspect.SetAttribute(ImporterAspect.ATTR_DATEADDED, DateTime.Now);
+
+      IDictionary<string, string> userData = new Dictionary<string, string>();
+      userData.Add(UserDataKeysKnown.KEY_PLAY_PERCENTAGE, playPercentage.ToString());
       MediaItemAspect.SetAspect(movieAspects, importerAspect);
 
-      Movie = new MediaItem(Guid.NewGuid(), movieAspects);
+      Movie = new MediaItem(Guid.NewGuid(), movieAspects, userData);
     }
   }
 }

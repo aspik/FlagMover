@@ -6,6 +6,9 @@ using MediaPortal.UI.Presentation.DataObjects;
 
 namespace FlagMover.Models
 {
+  /// <summary>
+  /// Base model for the backup and restore dialog
+  /// </summary>
   public abstract class BaseModel
   {
     protected readonly IMediaPortalServices _mediaPortalServices;
@@ -17,6 +20,10 @@ namespace FlagMover.Models
     protected ItemsList _directoryTree;
     protected string _selectedPath;
 
+    /// <summary>
+    /// The default constructor.
+    /// Called by MediaPortal 2
+    /// </summary>
     protected BaseModel()
     {
       _mediaPortalServices = new MediaPortalServices();
@@ -24,6 +31,12 @@ namespace FlagMover.Models
       _fileOperations = new FileOperations();
     }
 
+    /// <summary>
+    /// Constructor for unit tests
+    /// </summary>
+    /// <param name="mediaPortalServices">Services provided by Media Portal 2</param>
+    /// <param name="moverOperations">Operations provided by our Flag Mover</param>
+    /// <param name="fileOperations">IO file operations</param>
     protected BaseModel(IMediaPortalServices mediaPortalServices, IMoverOperations moverOperations, IFileOperations fileOperations)
     {
       _mediaPortalServices = mediaPortalServices;

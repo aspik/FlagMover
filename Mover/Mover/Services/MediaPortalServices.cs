@@ -46,13 +46,16 @@ namespace FlagMover.Services
           if (processResult.Success && processResult.Result != ContentDirectoryMessaging.MediaItemChangeType.None)
           {
             ContentDirectoryMessaging.SendMediaItemChangedMessage(mediaItem, processResult.Result);
-            GetLogger().Info("FlagMover: marking media item '{0}' as watched", mediaItem.GetType());
             result = true;
+          }
+          else
+          {
+            GetLogger().Error("FlagMover: Marking media item '{0}' as watched failed:", mediaItem.GetType());
           }
         }
         catch (Exception ex)
         {
-          GetLogger().Error("FlagMover:: marking media item '{0}' as watched failed:", mediaItem.GetType(), ex);
+          GetLogger().Error("FlagMover: Exception occurred while marking media item '{0}' as watched. Messager: {1}", mediaItem.GetType(), ex.Message);
           result = false;
         }
       }
