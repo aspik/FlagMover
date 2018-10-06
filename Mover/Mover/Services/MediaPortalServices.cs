@@ -55,9 +55,12 @@ namespace FlagMover.Services
         }
         catch (Exception ex)
         {
-          GetLogger().Error("FlagMover: Exception occurred while marking media item '{0}' as watched. Messager: {1}", mediaItem.GetType(), ex.Message);
-          result = false;
+          GetLogger().Error("FlagMover: Exception occurred while marking media item '{0}' as watched. Message: {1}", mediaItem.GetType(), ex.Message);
         }
+      }
+      else
+      {
+        GetLogger().Warn("FlagMover: The SetWatched action is not available for '{0}'. Already marked as watched?", mediaItem.GetType());
       }
 
       return result;

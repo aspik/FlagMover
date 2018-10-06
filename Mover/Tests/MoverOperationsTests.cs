@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using FlagMover;
 using FlagMover.Entities;
+using FlagMover.Exceptions;
 using FlagMover.Services;
 using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.MediaManagement.MLQueries;
@@ -143,6 +144,50 @@ namespace Tests
       // Assert
       Assert.Equal(1, result.MarkedWatchedCount);
       Assert.Equal(1, result.SavedWatchedCount);
+    }
+
+    [Fact]
+    public void Should_ThrowMediaLibraryNotConnectedException_When_ContentDirectoryIsNull()
+    {
+      // Arrange
+      IMediaPortalServices mediaPortalServices = Substitute.For<IMediaPortalServices>();
+      IFileOperations fileOperations = Substitute.For<IFileOperations>();
+      mediaPortalServices.GetServerConnectionManager().ContentDirectory.Returns(x => null);
+
+      IMoverOperations operations = new MoverOperations(mediaPortalServices, fileOperations);
+
+      // Act & Assert
+      Assert.Throws<MediaLibraryNotConnectedException>(() => operations.BackupMovies(FakePath));
+    }
+
+    [Fact]
+    public void Should_ThrowPathNotFoundException_When_WatchedMoviesFileNotFound()
+    {
+      // Arrange
+      IMediaPortalServices mediaPortalServices = Substitute.For<IMediaPortalServices>();
+
+      string savedMoviesPath = Path.Combine(FakePath, FileName.WatchedMovies.Value);
+      IFileOperations fileOperations = Substitute.For<IFileOperations>();
+      fileOperations.FileExists(savedMoviesPath).Returns(false);
+      IMoverOperations operations = new MoverOperations(mediaPortalServices, fileOperations);
+
+      // Act & Assert
+      Assert.Throws<PathNotFoundException>(() => operations.RestoreWatchedMovies(FakePath));
+    }
+
+    [Fact]
+    public void Should_ThrowPathNotFoundException_When_WatchedEpisodesFileNotFound()
+    {
+      // Arrange
+      IMediaPortalServices mediaPortalServices = Substitute.For<IMediaPortalServices>();
+
+      string savedEpisodesPath = Path.Combine(FakePath, FileName.WatchedEpisodes.Value);
+      IFileOperations fileOperations = Substitute.For<IFileOperations>();
+      fileOperations.FileExists(savedEpisodesPath).Returns(false);
+      IMoverOperations operations = new MoverOperations(mediaPortalServices, fileOperations);
+
+      // Act & Assert
+      Assert.Throws<PathNotFoundException>(() => operations.RestoreWatchedSeries(FakePath));
     }
   }
 }

@@ -222,7 +222,7 @@ namespace FlagMover.Services
       }
       else
       {
-        throw new Exception("Could not read selected series path");
+        throw new PathNotFoundException("Watched series path not found.");
       }
 
       return watchedEpisodes;
@@ -240,7 +240,7 @@ namespace FlagMover.Services
       }
       else
       {
-        throw new Exception("Could not read selected movies path");
+        throw new PathNotFoundException("Watched movies file not found.");
       }
 
       return watchedMovies;

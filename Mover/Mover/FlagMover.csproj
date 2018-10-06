@@ -56,6 +56,7 @@
     <Compile Include="Entities\MediaLibraryEpisode.cs" />
     <Compile Include="Entities\MediaLibraryMovie.cs" />
     <Compile Include="Exceptions\MediaLibraryNotConnectedException.cs" />
+    <Compile Include="Exceptions\PathNotFoundException.cs" />
     <Compile Include="FileName.cs" />
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
