@@ -6,9 +6,9 @@ using MediaPortal.Common.Logging;
 using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.PathManager;
 using MediaPortal.Common.Threading;
-using MediaPortal.Common.UserManagement;
 using MediaPortal.UiComponents.Media.MediaItemActions;
 using MediaPortal.UI.ServerCommunication;
+using MediaPortal.UI.Services.UserManagement;
 
 namespace FlagMover.Services
 {
@@ -34,18 +34,18 @@ namespace FlagMover.Services
       return ServiceRegistration.Get<IUserManagement>();
     }
 
-    public async Task<bool> MarkAsWatched(MediaItem mediaItem)
+    public bool MarkAsWatched(MediaItem mediaItem)
     {
       bool result = false;
       SetWatched setWatchedAction = new SetWatched();
-      if (await setWatchedAction.IsAvailableAsync(mediaItem))
+      if (setWatchedAction.IsAvailable(mediaItem))
       {
         try
         {
-          var processResult = await setWatchedAction.ProcessAsync(mediaItem);
-          if (processResult.Success && processResult.Result != ContentDirectoryMessaging.MediaItemChangeType.None)
+          ContentDirectoryMessaging.MediaItemChangeType changeType;
+          if (setWatchedAction.Process(mediaItem, out changeType) && changeType != ContentDirectoryMessaging.MediaItemChangeType.None)
           {
-            ContentDirectoryMessaging.SendMediaItemChangedMessage(mediaItem, processResult.Result);
+            ContentDirectoryMessaging.SendMediaItemChangedMessage(mediaItem, changeType);
             result = true;
           }
           else

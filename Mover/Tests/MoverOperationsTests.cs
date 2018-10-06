@@ -31,7 +31,7 @@ namespace Tests
         new MockedDatabaseEpisode("275278", 4, new List<int> { 10 }, 100).Episode,
         new MockedDatabaseEpisode("275271", 2, new List<int> { 11, 12 }, 90).Episode
       };
-      contentDirectory.SearchAsync(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
+      contentDirectory.Search(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
       mediaPortalServices.GetServerConnectionManager().ContentDirectory.Returns(contentDirectory);
       IFileOperations fileOperations = Substitute.For<IFileOperations>();
 
@@ -60,7 +60,7 @@ namespace Tests
         new MockedDatabaseMovie(new MediaLibraryMovie {Imdb = "tt0457939", Title = "Title_5", Tmdb = 12144, Year = 2010}, 0).Movie
 
       };
-      contentDirectory.SearchAsync(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
+      contentDirectory.Search(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
       mediaPortalServices.GetServerConnectionManager().ContentDirectory.Returns(contentDirectory);
       IFileOperations fileOperations = Substitute.For<IFileOperations>();
 
@@ -87,7 +87,7 @@ namespace Tests
         new MockedDatabaseEpisode("317653", 1, new List<int> { 2 }, 0).Episode,
         new MockedDatabaseEpisode("275271", 2, new List<int> { 11, 12 }, 0).Episode
       };
-      contentDirectory.SearchAsync(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
+      contentDirectory.Search(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
       mediaPortalServices.GetServerConnectionManager().ContentDirectory.Returns(contentDirectory);
       mediaPortalServices.MarkAsWatched(Arg.Any<MediaItem>()).Returns(true);
 
@@ -125,7 +125,7 @@ namespace Tests
         new MockedDatabaseMovie(new MediaLibraryMovie {Imdb = "tt1355630", Title = "Title_3", Tmdb = null, Year = 2013}, 0).Movie
 
       };
-      contentDirectory.SearchAsync(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
+      contentDirectory.Search(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
       mediaPortalServices.GetServerConnectionManager().ContentDirectory.Returns(contentDirectory);
       mediaPortalServices.MarkAsWatched(Arg.Any<MediaItem>()).Returns(true);
 
