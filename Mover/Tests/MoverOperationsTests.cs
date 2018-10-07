@@ -189,5 +189,32 @@ namespace Tests
       // Act & Assert
       Assert.Throws<PathNotFoundException>(() => operations.RestoreWatchedSeries(FakePath));
     }
+
+    [Fact]
+    public void Should_BackupTwoEpisodes_When_FourEpisodesCollectedAndFourWatched_WithDuplicatedEpisodeNumbers()
+    {
+      // Arrange
+      IMediaPortalServices mediaPortalServices = Substitute.For<IMediaPortalServices>();
+      IContentDirectory contentDirectory = Substitute.For<IContentDirectory>();
+      IList<MediaItem> databaseMediaItems = new List<MediaItem>
+      {
+        new MockedDatabaseEpisode("272127", 1, new List<int> { 7, 8 }, 100).Episode,
+        new MockedDatabaseEpisode("275278", 2, new List<int> { 1, 1, 1 }, 100).Episode,
+        new MockedDatabaseEpisode("275278", 4, new List<int> { 10, 10 }, 100).Episode,
+        new MockedDatabaseEpisode("275271", 2, new List<int> { 11, 12 }, 90).Episode
+      };
+      contentDirectory.Search(Arg.Any<MediaItemQuery>(), true, null, false).Returns(databaseMediaItems);
+      mediaPortalServices.GetServerConnectionManager().ContentDirectory.Returns(contentDirectory);
+      IFileOperations fileOperations = Substitute.For<IFileOperations>();
+
+      IMoverOperations operations = new MoverOperations(mediaPortalServices, fileOperations);
+
+      // Act
+      BackupResult result = operations.BackupSeries(FakePath);
+
+      // Assert
+      Assert.Equal(4, result.WatchedCount);
+      Assert.Equal(6, result.CollectedCount);
+    }
   }
 }

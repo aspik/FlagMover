@@ -92,7 +92,7 @@ namespace FlagMover.Utilities
           episodeNumbers.Add(episode);
         }
       }
-      return episodeNumbers;
+      return episodeNumbers.Distinct().ToList();
     }
   }
 }
