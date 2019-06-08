@@ -2,8 +2,8 @@
 using MediaPortal.Common.Logging;
 using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.Threading;
+using MediaPortal.Common.UserManagement;
 using MediaPortal.UI.ServerCommunication;
-using MediaPortal.UI.Services.UserManagement;
 
 namespace FlagMover.Services
 {
@@ -13,6 +13,6 @@ namespace FlagMover.Services
     ILogger GetLogger();
     IServerConnectionManager GetServerConnectionManager();
     IUserManagement GetUserManagement();
-    bool MarkAsWatched(MediaItem mediaItem);
+    Task<bool> MarkAsWatched(MediaItem mediaItem);
   }
 }

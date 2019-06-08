@@ -10,7 +10,7 @@ using MediaPortal.Common.MediaManagement;
 using MediaPortal.Common.MediaManagement.DefaultItemAspects;
 using MediaPortal.Common.MediaManagement.MLQueries;
 using MediaPortal.Common.SystemCommunication;
-using MediaPortal.UI.Services.UserManagement;
+using MediaPortal.Common.UserManagement;
 using Newtonsoft.Json;
 
 namespace FlagMover.Services
@@ -47,7 +47,7 @@ namespace FlagMover.Services
       IContentDirectory contentDirectory = GetContentDirectory();
       Guid? userProfile = GetUserProfileId();
 
-      IList<MediaItem> collectedMovieMediaItems = contentDirectory.Search(new MediaItemQuery(types, null, null), true, userProfile, false);
+      IList<MediaItem> collectedMovieMediaItems = contentDirectory.SearchAsync(new MediaItemQuery(types, null, null), true, userProfile, false).Result;
       result.CollectedCount = collectedMovieMediaItems.Count;
       List<MediaItem> watchedMovieMediaItems = collectedMovieMediaItems.Where(MediaItemAspectsUtl.IsWatched).ToList();
       IList<MediaLibraryMovie> watchedMovies = new List<MediaLibraryMovie>();
@@ -80,7 +80,7 @@ namespace FlagMover.Services
       IContentDirectory contentDirectory = GetContentDirectory();
       Guid? userProfile = GetUserProfileId();
 
-      IList<MediaItem> collectedEpisodeMediaItems = contentDirectory.Search(new MediaItemQuery(types, null, null), true, userProfile, false);
+      IList<MediaItem> collectedEpisodeMediaItems = contentDirectory.SearchAsync(new MediaItemQuery(types, null, null), true, userProfile, false).Result;
 
       foreach (MediaItem collectedEpisodeMediaItem in collectedEpisodeMediaItems)
       {
@@ -88,15 +88,12 @@ namespace FlagMover.Services
         result.CollectedCount = result.CollectedCount + episodeNumbers.Count;
       }
 
-
       List<MediaItem> watchedEpisodeMediaItems = collectedEpisodeMediaItems.Where(MediaItemAspectsUtl.IsWatched).ToList();
-      _mediaPortalServices.GetLogger().Info("watched {0}", watchedEpisodeMediaItems.Count);
       IList<MediaLibraryEpisode> watchedEpisodes = new List<MediaLibraryEpisode>();
 
       foreach (MediaItem watchedEpisodeItem in watchedEpisodeMediaItems)
       {
         List<int> episodeNumbers = MediaItemAspectsUtl.GetEpisodeNumbers(watchedEpisodeItem);
-        _mediaPortalServices.GetLogger().Info("FlagMover: ep numb: {0}", episodeNumbers.Count);
         if (episodeNumbers.Any())
         {
           AddEpisodes(watchedEpisodes, watchedEpisodeItem, episodeNumbers);
@@ -129,7 +126,7 @@ namespace FlagMover.Services
       IContentDirectory contentDirectory = GetContentDirectory();
       Guid? userProfile = GetUserProfileId();
 
-      IList<MediaItem> collectedMovies = contentDirectory.Search(new MediaItemQuery(types, null, null), true, userProfile, false);
+      IList<MediaItem> collectedMovies = contentDirectory.SearchAsync(new MediaItemQuery(types, null, null), true, userProfile, false).Result;
 
       foreach (MediaLibraryMovie watchedMovie in watchedMovies)
       {
@@ -139,7 +136,7 @@ namespace FlagMover.Services
           continue;
         }
 
-        if (_mediaPortalServices.MarkAsWatched(movie))
+        if (_mediaPortalServices.MarkAsWatched(movie).Result)
         {
           _mediaPortalServices.GetLogger().Info(
             "FlagMover: Marking movie as watched in library. Title = '{0}', Year = '{1}', IMDb ID = '{2}', TMDb ID = '{3}'",
@@ -169,7 +166,7 @@ namespace FlagMover.Services
       IContentDirectory contentDirectory = GetContentDirectory();
       Guid? userProfile = GetUserProfileId();
 
-      IList<MediaItem> localEpisodes = contentDirectory.Search(new MediaItemQuery(types, null, null), true, userProfile, false);
+      IList<MediaItem> localEpisodes = contentDirectory.SearchAsync(new MediaItemQuery(types, null, null), true, userProfile, false).Result;
       ILookup<string, MediaLibraryEpisode> loadedEpisodes = watchedEpisodes.ToLookup(twe => CreateLookupKey(twe), twe => twe);
 
       foreach (MediaItem episode in localEpisodes)
@@ -186,7 +183,7 @@ namespace FlagMover.Services
 
       if (watchedEpisode != null)
       {
-        if (_mediaPortalServices.MarkAsWatched(episode))
+        if (_mediaPortalServices.MarkAsWatched(episode).Result)
         {
           _mediaPortalServices.GetLogger().Info(
             "FlagMover: Marking episode as watched in library. Title = '{0}, Season = '{1}', Episode = '{2}', Show TVDb ID = '{3}', Show IMDb ID = '{4}'",
@@ -280,7 +277,6 @@ namespace FlagMover.Services
         foreach (int epNumber in episodeNumbers)
         {
           watchedEpisodes.Add(GetLibraryEpisode(episodeMediaItem, epNumber));
-          _mediaPortalServices.GetLogger().Info("added: {0}, numnber {1}", MediaItemAspectsUtl.GetSeriesTitle(episodeMediaItem), epNumber);
         }
       }
       else
