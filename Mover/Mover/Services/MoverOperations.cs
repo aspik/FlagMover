@@ -188,7 +188,7 @@ namespace FlagMover.Services
           _mediaPortalServices.GetLogger().Info(
             "FlagMover: Marking episode as watched in library. Title = '{0}, Season = '{1}', Episode = '{2}', Show TVDb ID = '{3}', Show IMDb ID = '{4}'",
             watchedEpisode.ShowTitle, watchedEpisode.Season,
-            watchedEpisode.Number, watchedEpisode.ShowTvdb.HasValue ? watchedEpisode.ShowTvdb.ToString() : "<empty>",
+            watchedEpisode.Number, watchedEpisode.ShowTvdb ?? "<empty>",
             watchedEpisode.ShowImdb ?? "<empty>");
 
           IncreaseResultCount(result, episode);
@@ -339,7 +339,7 @@ namespace FlagMover.Services
 
       if (episode.ShowTvdb != null)
       {
-        show = episode.ShowTvdb.Value.ToString();
+        show = episode.ShowTvdb;
       }
       else if (episode.ShowImdb != null)
       {
@@ -358,7 +358,7 @@ namespace FlagMover.Services
 
     private string CreateLookupKey(MediaItem episode)
     {
-      uint tvdbId = MediaItemAspectsUtl.GetTvdbId(episode);
+      string tvdbId = MediaItemAspectsUtl.GetTvdbId(episode);
       int seasonIndex = MediaItemAspectsUtl.GetSeasonIndex(episode);
       int episodeIndex = MediaItemAspectsUtl.GetEpisodeNumbers(episode).FirstOrDefault();
 

@@ -8,7 +8,7 @@ namespace FlagMover.Entities
     public string ShowImdb { get; set; }
 
     [JsonProperty(PropertyName = "show_tvdb")]
-    public uint? ShowTvdb { get; set; }
+    public string ShowTvdb { get; set; }
 
     [JsonProperty(PropertyName = "show_title")]
     public string ShowTitle { get; set; }

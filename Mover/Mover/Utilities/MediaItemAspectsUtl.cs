@@ -70,10 +70,10 @@ namespace FlagMover.Utilities
       return MediaItemAspect.TryGetExternalAttribute(mediaItem.Aspects, ExternalIdentifierAspect.SOURCE_IMDB, ExternalIdentifierAspect.TYPE_SERIES, out id) ? id : null;
     }
 
-    public static uint GetTvdbId(MediaItem mediaItem)
+    public static string GetTvdbId(MediaItem mediaItem)
     {
       string id;
-      return MediaItemAspect.TryGetExternalAttribute(mediaItem.Aspects, ExternalIdentifierAspect.SOURCE_TVDB, ExternalIdentifierAspect.TYPE_SERIES, out id) ? Convert.ToUInt32(id) : 0;
+      return MediaItemAspect.TryGetExternalAttribute(mediaItem.Aspects, ExternalIdentifierAspect.SOURCE_TVDB, ExternalIdentifierAspect.TYPE_SERIES, out id) ? id : null;
     }
 
     public static int GetSeasonIndex(MediaItem mediaItem)
